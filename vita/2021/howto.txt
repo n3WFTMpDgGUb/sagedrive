@@ -1,0 +1,67 @@
+CALIFORNIA HEALTH COVERAGE SHARED RESPONSIBILITY PAYMENT
+
+Tax year 2021
+
+
+Note:  These are instructions for a single TP with no dependents and
+with no offer of employer coverage (i.e., Marketplace eligible). Needs
+more thinking when there are more than one in tax family or if there is
+offer of employer coverage; see instructions for Form 3853.
+
+Go to CA Form 3853 Healthcare (shared responsibility payment).  Answer yes
+or no to the question about coverage all 12 months.  If yes (coverage
+all 12 months), or if there is no coverage and no exemption for each of
+the 12 months, or if TP has no filing requirement, nothing more to do.
+Otherwise as follows.
+
+Check "no" for minimum essential healthcare.  Then do things in opposite
+order to how they are listed by Taxslayer, as follows.
+
+(1) Affordability exemption is not possible if eligible for CoveredCA
+or MediCal.  Nevertheless, here's how to go through the exercise.
+
+	Select Coverage Affordability Worksheet, answer "yes", enter the
+	two premiums for LCBP and SLCSP.  Find monthly premiums for LCBP
+	and SLCSP at coveredca.com; use it's search button for "3853",
+	you'll find instructions.
+
+		Remark: If coveredca.com shows TP is eligible
+		for Medi-Cal, use 0 for SLCSP.	Likely results in
+		no affordability exemption.
+
+	Exit CA return and view PDF of return.	Find "Marketplace
+	Coverage Affordability Worksheet" at or near end of return.
+	Bottom line is annualized required contribution; write it down.
+	Verify correctness of the worksheet, in particular, parameters
+	of LCBP and SLCSP.
+
+	Find "Affordability Worksheet" at or near end of return.
+	Compare the number for "(A) Affordability Threshold" to the
+	number you wrote down.	If the written down number is less than
+	(A), not eligible for affordability exemption.
+
+(2) Select Shared Responsibilty Payment.  Start a shared responsibility
+payment worksheet for the individual.  Tag each month as indicated.
+
+	Hint:  "No" means you have determined there is penalty for month;
+	else "yes".  You need to manually determine this; Taxslayer
+	does not figure it out for you.  These yes/no entries are what
+	Taxslayer uses to calculate the SRP; all other entries related
+	to exemptions are ignored.
+
+If claiming affordability exemption, enter the annualized required
+contribution (that you wrote down above) for each relevant month.
+This will show up on the "Affordability Worksheet" of the return but is
+otherwise ignored by Taxslayer.
+
+(3) Select Coverage Exemptions and follow the dialog.  There needs to be
+either an entry for full-year or entries for every month, and they need
+to gibe with the yes/no answers you entered in (2).  This will show up
+on the "Coverage and Exemption Codes" page of the return but is otherwise
+ignored by Taxslayer.
+
+	Hint:  The entry "Select" in the dropdown box is the correct
+	choice for no coverage / no exemption.
+
+(4) Exit CA return, view PDF, and verify correctness of of the health
+coverage forms.

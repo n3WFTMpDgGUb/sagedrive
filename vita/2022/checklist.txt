@@ -1,0 +1,13 @@
+Things that Taxslayer should warn about but doesn't.
+
+	$0 AGI return
+
+	Kiddie tax, Fed and CA
+
+	HSA form
+
+	Schedule A if CA itemizing
+
+	Sales tax worksheet if Fed itemizing
+
+	Recovery rebate credit (2020, 2021)

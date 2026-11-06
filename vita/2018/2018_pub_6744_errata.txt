@@ -1,0 +1,14 @@
+[From Ruedi, email 12/28/2018]
+
+The following errors were identified with Advanced test, Scenario 8 – Roberta Wilson.
+
+Issue: The following changes were made to the Interview Notes in the Advanced test, Scenario 8 "Roberta Wilson."
+
+Changed from: Roberta claimed EIC for Jacob 2 years ago, but he only lived with her for two months and the credit was disallowed.
+
+Changed to: Roberta claimed EIC for Jacob on her 2015 tax return, but he only lived with her for two months and the credit was disallowed.
+
+
+Changed from: Roberta had wage income of $45,000 in 2018.
+
+Changed to: Roberta had wage income of $35,000 in 2018.

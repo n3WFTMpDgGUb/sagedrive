@@ -1,0 +1,51 @@
+[
+  {
+    "name": "..",
+    "isDir": true,
+    "size": 0,
+    "modified": "2026-10-30T15:13:28.294433",
+    "isParent": true
+  },
+  {
+    "name": "2017_form_1040nr_instructions.pdf",
+    "isDir": false,
+    "size": 1652563,
+    "modified": "2026-10-30T01:52:09.530654",
+    "isParent": false
+  },
+  {
+    "name": "2017_pub_519.pdf",
+    "isDir": false,
+    "size": 2179932,
+    "modified": "2026-10-30T01:52:09.647084",
+    "isParent": false
+  },
+  {
+    "name": "2018_form_1040nr_instructions.pdf",
+    "isDir": false,
+    "size": 1645661,
+    "modified": "2026-10-30T01:52:07.921382",
+    "isParent": false
+  },
+  {
+    "name": "2018_form_13614.pdf",
+    "isDir": false,
+    "size": 169457,
+    "modified": "2026-10-30T01:52:08.101000",
+    "isParent": false
+  },
+  {
+    "name": "2018_form_8843.pdf",
+    "isDir": false,
+    "size": 106203,
+    "modified": "2026-10-30T01:52:07.175021",
+    "isParent": false
+  },
+  {
+    "name": "2018_pub_4011.pdf",
+    "isDir": false,
+    "size": 1193521,
+    "modified": "2026-10-30T01:52:06.647448",
+    "isParent": false
+  }
+]

@@ -1,0 +1,44 @@
+[
+  {
+    "name": "..",
+    "isDir": true,
+    "size": 0,
+    "modified": "2026-10-30T15:13:28.297047",
+    "isParent": true
+  },
+  {
+    "name": "2018_form_1040nr_instructions.pdf",
+    "isDir": false,
+    "size": 1645661,
+    "modified": "2026-10-30T01:52:28.130159",
+    "isParent": false
+  },
+  {
+    "name": "2018_pub_519_aliens.pdf",
+    "isDir": false,
+    "size": 2159419,
+    "modified": "2026-10-30T01:52:27.944605",
+    "isParent": false
+  },
+  {
+    "name": "2019_form_8843.pdf",
+    "isDir": false,
+    "size": 105859,
+    "modified": "2026-10-30T01:52:26.471477",
+    "isParent": false
+  },
+  {
+    "name": "2019_pub_4011_vita_guide.pdf",
+    "isDir": false,
+    "size": 3930579,
+    "modified": "2026-10-30T01:52:26.502856",
+    "isParent": false
+  },
+  {
+    "name": "2019_pub_901_treaties.pdf",
+    "isDir": false,
+    "size": 1567727,
+    "modified": "2026-10-30T01:52:25.557069",
+    "isParent": false
+  }
+]

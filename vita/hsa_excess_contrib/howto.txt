@@ -1,0 +1,75 @@
+SCENARIO
+
+Tax year 2022.
+
+TP (age 60) was HSA-eligible for 8 months (contribution limit $3,100).
+At TP's request, employer made full-year's HSA contribution (W2 box 12
+code W $4,650).  Result is excess contribution of 4650 - 3100 = $1,550.
+
+TP did not request removal of excess contribution.
+
+TP requested and has 1099-SA showing showing normal distribution (box 3
+code 1) of $3200.  TP has qualifying medical expenses greater than $3200.
+
+TP has records showing HSA earned $200 interest in 2022.
+
+
+BACKGROUND
+
+4012 (page E-8) says "If the excess contributions and earnings are not
+withdrawn by the due date of the return, including extensions, then the
+return is out of scope."
+
+(See fidelity_hsa_excess.pdf for example of how to request removal.)
+
+
+SOLUTION
+
+One option is to tell TP it's OOS until he returns with 1099-SA
+documenting excess-contribution removal (box 3 code 2).  Reasonable,
+because it's difficult to accurately calculate earnings on excess
+contribution.  However, earnings are likely small, hate to turn TP away
+for it.
+
+Better option is to use TP records to determine approximate earnings
+on excess contribution, say $150.  Split his 1099-SA into two, one for
+excess contribution removal [$1700 box 1, $150 box 2, box 3 code 2) and
+one with normal distribution [$1500 box 1, box 3 code 1].  Results in
+additional taxable income of $1,700 Fed, $0 CA.
+
+
+TURBOTAX ENTRY
+
+Enter the two 1099-SAs as in the worksheets in taxlayer_hsa.pdf.
+Results in $1700 of "other income" on 1040 Schedule 1, which is backed
+out for CA on 540-CA Section B; both are in rows labeled "income from
+form 8889."  Note that TT treats entire amount as unearned income; seems
+to me should be $1550 earned, $150 unearned, but absent authoritative
+reference will go with TT.  Enter the $200 HSA interest as usual, shows
+up as addition on 540-CA.
+
+
+TAXSLAYER ENTRY
+
+Enter the three numbers ($3200, $1700, $1500) into 1099-SA dialog, per
+the screenshot in taxslayer_hsa.pdf.  This results in correctly filled
+out Form 8889, as shown in the return (also in the pdf).
+
+However, Taxslayer does not handle the income adjustment automatically;
+it requires manual entries, as follows:
+
+- Needs manual entry of $1700 as "Other income".  Per TT, call it
+unearned and label it "Income from Form 8889".  Appears on a different
+row of Schedule 1 than it does with TT but result is same.
+
+- Need to back it out for CA as "Subtraction -> Other Income".  TS does
+not allow digits in label and limits to 20 characters, so I settled on
+"From Fed HSA Form"; explanatory note makes it clear it offsets "Income
+from form 8889".  Appears on a different row of 540-CA than it does with
+TT but result is same.
+
+- For HSA interest, TS does not seem to work for CA-540 "Addition ->
+Interest". Instead use "Addition -> Other Income" and label it "HSA
+Interest."  Appears on Section B of 540-CA rather than Section A as with
+TT, but result is the same.
+

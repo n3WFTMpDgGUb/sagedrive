@@ -1,0 +1,19 @@
+EXCESS EMPLOYER HSA CONTRIBUTION -- EARNED OR UNEARNED INCOME?
+
+A friend had excess employer contribution to HSA of $1500 in 2022.
+He requested removal, it was done, and he has 1099-SA showing distribution
+of $1600: $1500 excess contribution, $100 earnings on excess contribution.
+Turbotax enters $1600 of additional income on 1040 Schedule 1, Line 8f,
+"income from form 8889."
+
+The amount is clearly correct. What doesn't seem right is that Turbotax
+treats the entire amount as unearned income.  Seems to me that $1500
+should be earned income, since it was excluded from W2 salary (box 1).
+As earned income, it would be subject to self-employment tax, which
+also seems right because it would have been subject to payroll tax had
+it been included in W2 salary.
+
+However, I don't find anything in Pub 969 or Form 8889 instructions
+that discusses earned versus unearned income.  Can anybody point to a
+reference that resolves whether it's earned or unearned?
+

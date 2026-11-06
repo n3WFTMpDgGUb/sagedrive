@@ -1,0 +1,51 @@
+[
+  {
+    "name": "..",
+    "isDir": true,
+    "size": 0,
+    "modified": "2026-10-30T15:13:28.308977",
+    "isParent": true
+  },
+  {
+    "name": "bogleheads.txt",
+    "isDir": false,
+    "size": 977,
+    "modified": "2026-10-30T01:53:46.160877",
+    "isParent": false
+  },
+  {
+    "name": "fidelity_excess_contributions.pdf",
+    "isDir": false,
+    "size": 60935,
+    "modified": "2026-10-30T01:53:46.336454",
+    "isParent": false
+  },
+  {
+    "name": "howto.txt",
+    "isDir": false,
+    "size": 2991,
+    "modified": "2026-10-30T01:53:45.567311",
+    "isParent": false
+  },
+  {
+    "name": "taxslayer_hsa.pdf",
+    "isDir": false,
+    "size": 890331,
+    "modified": "2026-10-30T01:53:45.551512",
+    "isParent": false
+  },
+  {
+    "name": "turbotax_hsa.pdf",
+    "isDir": false,
+    "size": 563442,
+    "modified": "2026-10-30T01:53:44.887104",
+    "isParent": false
+  },
+  {
+    "name": "turbotax_hsa.tax2022",
+    "isDir": false,
+    "size": 1792334,
+    "modified": "2026-10-30T01:53:44.380206",
+    "isParent": false
+  }
+]

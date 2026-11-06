@@ -1,0 +1,44 @@
+[
+  {
+    "name": "..",
+    "isDir": true,
+    "size": 0,
+    "modified": "2026-10-30T15:13:28.296354",
+    "isParent": true
+  },
+  {
+    "name": "a.pdf",
+    "isDir": false,
+    "size": 2649985,
+    "modified": "2026-10-30T01:52:24.822695",
+    "isParent": false
+  },
+  {
+    "name": "fun.py",
+    "isDir": false,
+    "size": 2671,
+    "modified": "2026-10-30T01:52:22.159214",
+    "isParent": false
+  },
+  {
+    "name": "original.pdf",
+    "isDir": false,
+    "size": 10096712,
+    "modified": "2026-10-30T01:52:24.013524",
+    "isParent": false
+  },
+  {
+    "name": "revised.pdf",
+    "isDir": false,
+    "size": 1650673,
+    "modified": "2026-10-30T01:52:21.473559",
+    "isParent": false
+  },
+  {
+    "name": "_revised.pdf",
+    "isDir": false,
+    "size": 1649142,
+    "modified": "2026-10-30T01:52:21.023653",
+    "isParent": false
+  }
+]
