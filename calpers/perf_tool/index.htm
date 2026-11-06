@@ -1,0 +1,474 @@
+<html>
+<head>
+<script src="/googanal.js"></script>
+
+<script src="https://www.gstatic.com/charts/loader.js"></script>
+
+<script type="text/javascript">
+
+var expected_irr = 0.0782;
+var expected_mva = 0;
+var expected_status = 0;
+
+
+google.charts.load('current', {packages: ['corechart']}); 
+google.setOnLoadCallback(drawAll);
+
+function myFmt(x) {
+	return Number(x).toFixed(2);
+}
+
+function drawAll() {
+	drawChart();
+	document.getElementById("irrBox").value = myFmt(100*expected_irr);
+	tweakTable(expected_irr, expected_mva, expected_status);
+}
+
+function irrBoxHandler() {
+	var x = Number(document.getElementById("irrBox").value);
+	var min_x = myFmt(0);
+	var max_x = myFmt(11.8);
+	if (!((x >= min_x) && (x <= max_x))) {
+		alert("Please enter a number from " + min_x + " to " + max_x);
+		x = expected_irr * 100;
+	}
+	x = Number(myFmt(x));
+	expected_irr = x/100;
+	drawAll();
+}
+
+function submitHandler() {
+	return false;
+}
+
+
+var fred = [];
+
+function drawChart() {
+
+	fred = [];
+
+	// Asset and liability data.
+	// First year is 1993, so explicitly include it.
+	// Other years follow sequentially, to be included later.
+	//
+	fred.push( {year:1993, mva1:75910, liab1:75910, irr:.145} );
+	//
+	fred.push( {liab1:80530,  mva1:0.951*80530, irr:  2.0} );
+	fred.push( {liab1:87673,  mva1:1.017*87673, irr: 16.3} );
+	fred.push( {liab1:96838,  mva1:1.049*96838, irr: 15.3} );
+	fred.push( {liab1:97925,  mva1:120629,      irr: 20.1} );
+	fred.push( {liab1:106938, mva1:143144,      irr: 19.5} );
+	fred.push( {liab1:115748, mva1:159567,      irr: 12.5} );
+	fred.push( {liab1:135970, mva1:172163,      irr: 10.5} );
+	fred.push( {liab1:149155, mva1:156035,      irr: -7.2} );
+	fred.push( {liab1:163961, mva1:142455,      irr: -6.1} );
+	fred.push( {liab1:180922, mva1:144330,      irr:  3.7} );
+	fred.push( {liab1:194609, mva1:167110,      irr: 16.6} );
+	fred.push( {liab1:210301, mva1:189103,      irr: 12.3} );
+	fred.push( {liab1:228131, mva1:211188,      irr: 11.8} );
+	fred.push( {liab1:248224, mva1:251162,      irr: 19.1} );
+	fred.push( {liab1:268324, mva1:238041,      irr: -5.1} );
+	fred.push( {liab1:294042, mva1:178860,      irr:-24.0} );
+	fred.push( {liab1:308343, mva1:201632,      irr: 13.3} );
+	fred.push( {liab1:328567, mva1:241740,      irr: 21.7} );
+	fred.push( {liab1:340429, mva1:236800,      irr:  0.1} );
+	fred.push( {liab1:375019, mva1:261622,      irr: 13.2} );
+	fred.push( {liab1:394726, mva1:301257,      irr: 17.7} );
+	fred.push( {liab1:413700, mva1:302418,      irr:  2.4} );
+	fred.push( {liab1:436703, mva1:298126,      irr:  0.6} );
+	fred.push( {liab1:465046, mva1:326182,      irr: 11.2} );
+	fred.push( {liab1:504996, mva1:354616,      irr:  8.6} );
+	//
+	// Include year for all but first. 
+	for (var i=1; i<fred.length; i++) {
+		fred[i].year = fred[i-1].year + 1;
+	}
+	// Scale irr by 1/100 
+	for (i=0; i<fred.length; i++) fred[i].irr /= 100;
+
+	// Compute expected value of assets, based on constant
+	// return expected_irr
+	//
+	// Expected value of assets at end of year 0
+	// equals market value of assets).
+	fred[0].eva1 = fred[0].mva1;
+	//
+	// Compute eva for end of years 1 and later
+	//
+	for (var i=1; i<fred.length; i++) {
+		// Get implicit net cash flow at midyear,
+		// based on mva at start and end of year,
+		// and actual irr.
+		var mva1 = fred[i].mva1;
+		var mva0 = fred[i-1].mva1;
+		var x = Math.pow(1 + fred[i].irr, 0.5);
+		var flow = mva1 / x - mva0 * x;
+		fred[i].flow = flow;
+		//
+		// Get eva at end of year, 
+		// based on eva ast start of year,
+		// cash flow at midyear,
+		// and expected irr.
+		var eva0 = fred[i-1].eva1;
+		var y = Math.pow(1 + expected_irr, 0.5);
+		var eva1 = (eva0 * y + flow) * y;
+		fred[i].eva1 = eva1;
+	}
+
+	// Set up data to plot
+	//
+	var ethel = [];
+	ethel.push([
+		'Year', 
+		'Actual funded status', 
+		'Funded status based on ' + 
+		myFmt(100*expected_irr) + '% return'
+	]);
+	//
+	for (var i=0; i<fred.length; i++) {
+		var yr = fred[i].year;
+		var x = 100*fred[i].mva1 / fred[i].liab1;
+		var y = 100*fred[i].eva1 / fred[i].liab1;
+		ethel.push([
+			yr, 
+			Number(x.toFixed(1)), 
+			Number(y.toFixed(1))
+		]);
+	}
+
+	// Set globals
+	var i = fred.length - 1;
+	expected_mva = fred[i].eva1; 
+	expected_status = fred[i].eva1 / fred[i].liab1;
+
+	// Set up chart options
+	var hTicks = [];
+	for (var i=0; i<fred.length; i++) hTicks.push(fred[i].year)
+	var vTicks = [];
+	for (var y=0; y <= 160; y += 20) vTicks.push(y);
+	//
+	var options = {
+		title: 'CalPERS actual funded status, ' + 
+		       'and funded status based on ' + 
+			   myFmt(100*expected_irr) + '% return',
+		hAxis: {
+			format: '####',  
+			ticks: hTicks
+		},
+		vAxis: {
+			title: 'Funded status (%)',
+			ticks: vTicks
+		},
+		legend: { position: 'bottom' }
+	};
+
+	// Draw the chart using google routines
+	var data = google.visualization.arrayToDataTable(ethel);
+	var chart = new google.visualization.LineChart(
+	                document.getElementById('curve_chart')
+	            );
+	chart.draw(data, options);
+
+}
+
+function tweakTable(irr, eva, eStatus) {
+	var tbl = document.getElementById("myTable");
+
+	var cLabel = 0;
+	//var c1993 = 2;
+	var c2018 = 4;
+	var rLiab = 1;
+	var rExpectedMva = 3;
+	var rExpectedStatus = 5;
+
+	var irrStr = Number(100*irr).toFixed(2);
+	var evaStr = Number(eva/1000).toFixed(1);
+	var eStatusStr = Number(100*eStatus).toFixed(1);
+
+	tbl.rows[rExpectedMva].cells[cLabel].innerHTML = 
+		"C. Value of assets based on " + irrStr + "% return";
+
+	tbl.rows[rExpectedMva].cells[c2018].innerHTML = 
+		"$" + evaStr + "B";
+
+	tbl.rows[rExpectedStatus].cells[cLabel].innerHTML = 
+		"E. Funded status based on " + irrStr
+		+ "% return (C &divide; A)";
+
+	tbl.rows[rExpectedStatus].cells[c2018].innerHTML = 
+		eStatusStr + "%";
+
+}
+
+var ssWindow;
+function open_sswin() {
+	ssWindow = window.open("sswin.htm");
+}
+function ssWinHandler() {
+
+	d = ssWindow.document;
+
+	// Get table object in body
+	var table = d.getElementById("ssTable1");
+
+	table.border = 0;
+
+	// Build array of table rows
+	var rows = [];
+
+	// Top row is years
+	var x = [];
+	x.push("");
+	for (var i=0; i<fred.length; i++) {
+		y = "<b>" + fred[i].year + "</b>";
+		x.push(y);
+	}
+	rows.push(x);
+
+	var item = 1;
+
+	// Liability
+	var x = [];
+	x.push(item++ + ". Accrued liability ($B)");
+	for (var i=0; i<fred.length; i++) {
+		var y = Number(fred[i].liab1 / 1000).toFixed(1);
+		x.push(y);
+	}
+	rows.push(x);
+
+	// Actual VA
+	var x = [];
+	x.push(item++ +". Actual value of assets ($B)");
+	for (var i=0; i<fred.length; i++) {
+		var y = Number(fred[i].mva1 / 1000).toFixed(1);
+		x.push(y);
+	}
+	rows.push(x);
+
+	// Actual UL
+	var x = [];
+	x.push(item++ + ". Actual unfunded liability ($B)");
+	for (var i=0; i<fred.length; i++) {
+		var y = Number((fred[i].liab1 - fred[i].mva1) / 1000).toFixed(1);
+		x.push(y);
+	}
+	rows.push(x);
+
+	// Actual funded ratio
+	var x = [];
+	x.push(item++ + ". Actual funded status (%)");
+	for (var i=0; i<fred.length; i++) {
+		var y = Number(100 * fred[i].mva1 / fred[i].liab1).toFixed(1);
+		x.push(y);
+	}
+	rows.push(x);
+
+	// Actual return
+	var x = [];
+	x.push(item++ +". Actual investment return (%)");
+	x.push("");
+	for (var i=1; i<fred.length; i++) {
+		var y = Number(100 * fred[i].irr).toFixed(1);
+		x.push(y);
+	}
+	rows.push(x);
+
+	// Flow
+	var x = [];
+	x.push(item++ + ". Net inflow ($B)");
+	x.push("");
+	for (var i=1; i<fred.length; i++) {
+		var y = Number(fred[i].flow / 1000).toFixed(1);
+		x.push(y);
+	}
+	rows.push(x);
+
+	// Expected VA
+	var x = [];
+	var y = item++ + ". Value of assets, " +
+	        Number(expected_irr * 100).toFixed(2) + "% return ($B)"
+	x.push(y);
+	for (var i=0; i<fred.length; i++) {
+		var y = Number(fred[i].eva1 / 1000).toFixed(1);
+		x.push(y);
+	}
+	rows.push(x);
+
+	// Expected UL
+	var x = [];
+	var y = item++ + ". Unfunded liability, " +
+	        Number(expected_irr * 100).toFixed(2) + "% return ($B)"
+	x.push(y);
+	for (var i=0; i<fred.length; i++) {
+		var y = Number((fred[i].liab1 - fred[i].eva1) / 1000).toFixed(1);
+		x.push(y);
+	}
+	rows.push(x);
+
+	// Expected funded ratio
+	var x = [];
+	var y = item++ + ". Funded status, " +
+	        Number(expected_irr * 100).toFixed(2) + "% return (%)"
+	x.push(y);
+	for (var i=0; i<fred.length; i++) {
+		var y = Number(100 * fred[i].eva1 / fred[i].liab1).toFixed(1);
+		x.push(y);
+	}
+	rows.push(x);
+
+	// Fold the table
+	var hi=[];
+	var lo=[];
+	for (var i=0; i<rows.length; i++) {
+		hi.push([]);
+		lo.push([]);
+		hi[i].push(rows[i][0]);
+		lo[i].push(rows[i][0]);
+		for (var j=1; j<=13; j++) {
+			hi[i].push(rows[i][j]);
+		}
+		for (; j < rows[i].length; j++) {
+			lo[i].push(rows[i][j]);
+		}
+	}
+	hi.push([]);
+	hi[rows.length][0] = " ";
+	rows = hi.concat(lo);
+
+
+	// Generate the table
+	for (var i=0; i<rows.length; i++) {
+		row = table.insertRow(-1);
+		for (var j=0; j<rows[i].length; j++) {
+			var cell = row.insertCell(j);
+			cell.innerHTML = rows[i][j];
+			cell.style.textAlign = (j == 0) ? "left" : "right";
+			cell.style.whiteSpace = "nowrap";
+		}
+	}
+
+}
+
+</script>
+
+</head>
+
+<body>
+
+<div id="curve_chart" style="width: 900px; height: 500px"></div>
+
+<!--
+<div style="margin-left: 250px;">
+-->
+<div style="width: 900px;">
+<table id="myTable" border=0 align="center">
+	<tr>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<th align=right>1993</th>
+		<td>&nbsp;</td>
+		<th align=right>2018</th>
+	</tr>
+	<tr>
+		<td>A. Accrued liability</td>
+		<td>&nbsp;</td>
+		<td align=right>$75.9B</td>
+		<td>&nbsp;</td>
+		<td align=right>$505.0B</td>
+	</tr>
+	<tr>
+		<td>B. Actual value of assets</td>
+		<td>&nbsp;</td>
+		<td align=right>$75.9B</td>
+		<td>&nbsp;</td>
+		<td align=right>$354.6B</td>
+	</tr>
+	<tr>
+		<td>C. Value of assets based on ?.??% return</td>
+		<td>&nbsp;</td>
+		<td align=right>$75.9B</td>
+		<td>&nbsp;</td>
+		<td align=right>$261.6B</td>
+	</tr>
+	<tr>
+		<td>D. Actual funded status (B &divide; A)
+		<td>&nbsp;</td>
+		<td align=right>100%</td>
+		<td>&nbsp;</td>
+		<td align=right>70.2%</td>
+	</tr>
+	<tr>
+		<td>E. Funded status based on ?.??% return (C &divide; A)
+		<td>&nbsp;</td>
+		<td align=right>100%</td>
+		<td>&nbsp;</td>
+		<td align=right>69.8%</td>
+	</tr>
+</table> 
+
+<p>
+<center>
+<a href="javascript:open_sswin()">Detailed spreadsheet</a> (opens in new window).
+</center>
+
+<p>
+<center>
+<form onSubmit="return submitHandler()">
+Choose fixed return (%):  
+<input type="text" id="irrBox" size="8" onChange="irrBoxHandler()"></input>
+<input type="submit" value="Update"></input>
+</form>
+
+</div>
+
+<div>
+<p>
+<p>
+This tool displays the actual funded status of the CalPERS PERF fund
+during the 25-year period of 1993 to 2018.  It compares the actual
+funded status to what it would have been had investments yielded a fixed
+return in each of those 25 years.
+
+<!--
+<p>
+<i>Funded status</i> is the ratio of the value of assets to accrued
+liability.  The <i>value of assets</i> is the total market value of
+investments held by the PERF. <i>Accrued liability</i> is the total
+amount owed to current and past employees for pension benefits already
+earned from past employment.  
+-->
+
+<p>
+In 1993 the funded status was 100%, but by 2018 it had dropped to 70.2%,
+a shortfall of $150.4B. The shortfall is often blamed on investment
+return being less than hoped for.  This tool allows you to explore if
+this is actually true or not.
+
+<p>
+Select a value for the fixed return using the form above.  Hover your
+mouse cursor over the plots to see numerical values.  
+Here are some example returns you might want to try:
+
+<ul>
+
+<li> <b>7.82%</b> produces a final result equal to the actual funded
+status (70.2% in 2018).  This shows that the actual investment results
+were equivalent to a fixed return of 7.82%.  </li>
+
+<li> <b>9.13%</b> produces a final result of full funding (100.1% in
+2018).  This shows that investments would have had to earn a fixed
+return of 9.13% to overcome the shortfall that occurred over the 25
+years.  </li>
+
+<li> <b>7.0%</b> produces a final result worse than the actual funded
+status (55.7% versus 70.2% in 2018).  Thus investments did better over
+the 25 years than the current assumption of 7.0%.  </li>
+
+</ul>
+</div>
+
+
+</body>
+
+</html>

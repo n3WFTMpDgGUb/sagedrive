@@ -1,0 +1,121 @@
+<html>
+<!--
+Copyright 2007-2020 Michael J. Sabin
+-->
+<head>
+<title>Help for Federal Budget Browser</title>
+</head>
+
+<body>
+
+<H1 align="center">Federal Budget Browser</H1>
+<H2 align="center">A Tool for Navigating Federal Spending</H2>
+
+<P align="center">
+<i>
+"A billion here, a billion there, and pretty soon you're talking about
+real money."  
+</i>
+<br>U.S. Senator Everett Dirkson.
+</P>
+
+<P> 
+Each year the federal government spends trillions of dollars.  
+This
+Federal Budget Browser can help you navigate how those dollars are
+spent.  
+The Browser is simple to operate&nbsp;&#151; 
+you can probably figure it out with just
+a little playing.
+Here is a summary of its features:
+</P>
+
+
+<DL>
+
+<DT><B>Main Display</B>
+<DD>Items are displayed in a table with spending amount in one column
+and item name in the other.  Click on a column heading to sort display
+accordingly.  If an item name is a link, click on it for more detail.
+
+<DT><B>Display By</B>
+<DD>Selects category to display.  Number of items in category is
+indicated in parentheses.  <I>Caution:</I> a category with a large
+number of items may be slow to display.
+
+<DT><B>Narrow Results To</B>
+<DD>When you click on an item-name link in the main display, the next
+screen shows that item and its category as an entry in the "Narrow
+Results To" section.  The main display is restricted to categories and
+items common to entries in this section.  To remove an entry from
+this section, click on its item name.
+
+<DT><B>This Implicitly Narrows Results To</B>
+<DD>If a category only has one item that applies to the "Narrow Results
+To" section, that category and item are listed in the "Implicitly
+Narrows Results To" section.  Clicking on the the item moves it to the
+"Narrows Results To" section; doing so has no effect on the main
+display.
+
+<DT><B>Start Over</B>
+<DD>Resets browser to default display.
+
+<DT><B>Change Year</B>
+<DD>Select a fiscal year to browse.
+
+<DT><B>Normalization</B>
+<DD>Use this field to scale federal spending to
+any desired amount.  If left blank, items are displayed as actual
+dollars spent.  If a numerical amount is entered, total federal spending
+for the year is set to that amount, and individual spending items are
+scaled in proportion.  The displayed precision matches that of the
+entered value; for example, if 123456.000 is entered, then items are
+displayed to three decimal places.
+Normalization is sometimes helpful in making sense of the huge
+numbers involved in federal spending.  For example, if normalization of
+100.00 is entered, spending items are displayed as percentages of total
+spending.  Or if normalization is set to the amount of taxes you paid
+for the year, then you can see directly how your tax dollars were spent.
+</DL>
+
+<P> 
+The Browser uses the 
+<a href="./outlays2021.csv">Outlays dataset</a>
+of the
+<a href="https://www.whitehouse.gov/omb/supplemental-materials/">
+Public Budget Database</a> 
+for fiscal year 2021,
+published by the 
+<a href="http://www.whitehouse.gov/omb"> 
+White House Office of Management and Budget</a>.  
+The Browser covers fiscal years from 1982 to 2025.  
+For fiscal years 2020 to 2025, inclusive, it uses projected spending.  
+For fiscal years 1982 to 2019, inclusive, it uses actual spending.
+</P>
+
+<P> 
+The name "Federal Budget Browser" is a bit imprecise since
+off-budget spending (such as Social Security) is included.  
+This kind of imprecision occurs frequently in the literature.
+For example, the 
+<a href="https://www.whitehouse.gov/omb/supplemental-materials/">
+Public Budget Database</a> 
+includes off-budget spending as well.  
+</P>
+
+<P>
+<SCRIPT>
+// Obfuscate the email link to make it hard for spambots to find
+var addr = "fedb";
+addr = addr + "ud@at";
+addr = addr + "t.net";
+var hr = "mai";
+hr = hr + "lto";
+hr = hr + ":" + addr;
+var lk = '<a href="' + hr + '">' + addr + '</a>';
+document.write("Comments to " + lk + ".");
+</SCRIPT>
+</P>
+
+</body>
+

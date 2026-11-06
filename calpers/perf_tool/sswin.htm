@@ -1,0 +1,128 @@
+<html>
+<head>
+<script src="/googanal.js"></script>
+</head>
+
+<body onload="window.opener.ssWinHandler()">
+
+<div>
+<p>
+<script>
+var x = (window.opener.expected_irr*100).toFixed(2);
+document.write(
+	"<b>Details of CalPERS actual funded status, " +
+	"and funded status based on " + x + "% return</b>"
+);
+</script>
+
+<p>
+<table id="ssTable1">
+</table>
+</div>
+
+<div>
+<p>
+Note:  A fiscal year begins on July 1 and ends on June 30.
+The valuation date for a year is June 30,
+i.e., the close of the fiscal year.
+For example, for the entries for the year 2000,
+the valuation date is 30 June 2000,
+and the fiscal year is 1 July 1999 to 30 June 2000.
+
+<ol type=1>
+
+<li>
+<i>Accrued liability</i> is the total liability for benefits
+already earned for past service as reported by CalPERS on
+the valuation date.
+</li>
+
+<li>
+<i>Actual value of assets</i> is the market value of investments
+as reported by CalPERS on the valuation date.
+</li>
+
+<li>
+<i>Actual unfunded liability</i> is [1] &#8722; [2].
+</li>
+
+<li><i>Actual funded status</i> is [2] &divide; [1].</li>
+
+<li><i>Actual investment return</i> is the investment return for the 
+fiscal year that ends on the valuation date,
+as reported by CalPERS.</li>
+
+<li><i>Net inflow</i> is [2] &divide; 
+<span style="white-space: nowrap">sqrt(1 +[5])</span>
+&#8722; [2, preceding year] &times; 
+<span style="white-space: nowrap">sqrt(1 +[5]).</span></li>
+
+<li><i>Value of assets, X% return</i> for 1993 is [2].
+For other years, it is [7, preceding year] &times; (1 + X)
++ [6] &times; 
+<span style="white-space: nowrap">sqrt(1 + X)</span>.</li>
+
+<li><i>Unfunded liability, X% return</i> is [1] &#8722; [7].</li>
+
+<li><i>Funded status, X% return</i> is [7] &divide; [1].</li>
+
+</ol>
+
+<p>
+Data sources: <ul>
+
+<li>
+<i>Accrued liability</i> is from [CAFR2003, p.  90],
+[CAFR2013, p.  132], and [CAFR2019, p.  122].
+</li>
+
+<li>
+<i>Actual value of assets</i>
+is the market value of assets from 
+[CAFR2007, p.  106], [CAFR2013, p. 132], and [CAFR2019, p.  122] for 1997-2018.  
+For 1993-1996, the CAFRs do not report the market value of assets; 
+for these years,
+the funded status was obtained by measuring the plot in [RISK2014, p. 4], and
+the market value of assets was computed by multiplying the accrued
+liability by the measured funded status.
+</li>
+
+<li>
+<i>Actual investment return</i> is from [VAL2013, p.  20]
+and [VAL2018, p. 13].
+</li>
+
+</ul>
+
+<p>
+References: 
+(available at 
+<a href="http://www.calpers.ca.gov" target="_blank">
+http://www.calpers.ca.gov</a>):
+<ul>
+
+<li>
+[CAFRyyyy]  CalPERS. "Comprehensive Annual Financial Report, 
+Fiscal Year Ended June 30, yyyy."
+</li>
+
+<li>
+[VALyyyy] CalPERS.  "State Actuarial Valuation, as of June 30, yyyy."
+</li>
+
+<li>
+[RISK2014] CalPERS.
+"Funding Risk and Mitigation."
+Presented at the meeting of the Board of Administration,
+"Special Session -- Funding Risk and Mitigation,"  
+agenda attachment,
+August 18, 2015.
+</li>
+
+</ul>
+
+</div>
+
+</body>
+
+</html>

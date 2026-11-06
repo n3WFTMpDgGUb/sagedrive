@@ -1,0 +1,683 @@
+PACKED BOXES, SHIPPED IN UPACK CUBE
+
+Original pre-move: 15 Jan 2024
+Updated for post-move: 13 May 2024
+Updated for placing into plastic bins: 12 Nov 2024
+
+(S)mall, (M)edium, (L)arge, (B)ankers, (G)ateway, X=other
+
+
+S 1. MJS 
+
+- Books
+
+- Vantage Patella Trac knee braces (in box)
+
+- Elastic ankle support
+
+
+S 2. MJS
+
+- Consulting notebooks (binders plus pages)
+
+- VITA Foreign Student exam with answers
+
+
+S 3. MJS
+
+- Consulting notebooks (pages only, no binders)
+
+
+B 8. MJS
+
+- Memorabilia archive
+
+- TAD (possibly, or in box #11)
+
+
+S 11. MJS 
+
+- Materials for courses taught at UC Berkely 1984-1986
+
+- PhD research notebook, Stanford (1981-1984)
+
+- Resistor collection
+
+- Wirewrap tool and wire
+
+- QSL cards received
+
+- TAD (possibly, or in box #8)
+
+
+B 12. MJS
+
+- Contents of File Archive #3 (search "ARCHIVE" in memo.txt)
+
+- Nostalgic maps
+
+- Other maps (old and detailed)
+
+
+B 39. MJS
+
+- File Archive #6
+
+
+################ UNPACKED #######################
+#L 4. SSH
+#
+#- Clothes on hangers
+#
+#- Nylons
+#
+#- Jackets
+#
+#
+# M 5. MJS (* = in plastic bin in garage)
+# 
+#- Consulting notebooks (binders only, no pages)
+#
+#- MedicAir back pillow *
+#
+#- Futuro back brace *
+#
+#- Vantage Patella Trac knee braces (one in box, two used) *
+#
+#- Knee brace (brand unknown, used) *
+#
+#- Ace ankle brace (in box) *
+#
+#- Hawaiian shirt
+#
+#
+#L 6. SSH
+#
+#- Pants, shorts
+#
+#- Belts
+#
+#- Clothes in dresser
+#
+#- Sweaters
+#
+#- Totes coat
+#
+#
+#M 7. SSH
+#
+#- Purse (stuffed with underwear)
+#
+#- Slippers
+#
+#- Sandals
+#
+#- Shoes
+#
+#- Rain coats
+#
+#- 2 windbreakers
+#
+#
+#B 9. SSH
+#
+#- Miscellaneous stuff in: dresser, night stand, desk, shelf
+#
+#- Soaps
+#
+#- Bugsy
+#
+#- Stationery supples (SSH and MJS)
+#
+#
+#M 10. SSH (* = in plastic bin in garage)
+#
+#- Diplomas *
+#
+#- Mom and Dad stuff *
+#
+#- year books *
+#
+#- sweaters made by Mom
+#
+#
+#L 13. MJS 
+#
+#- 3 pants
+#
+#- 2 belts
+#
+#- dress shirts
+#
+#- T-shirt
+#
+#- pajamas
+#
+#- gray jacket
+#
+#- sweat shirt
+#
+#- UF diploma plaque
+#
+#- Presidential Young Investigator plaque
+#
+#
+#M 14. MJS (except where noted)
+#
+#- IEEE Paper Award ASSP
+#
+#- flip flops (white, 50 cents from Walmart)
+#
+#- socks
+#
+#- clothes from coat closet
+#
+#- walking shorts (2)
+#
+#- gym shorts (new)
+#
+#- ties
+#
+#- ski gloves
+#
+#- baseball hats (SSH and MJS)
+#
+#M 15. SSH
+#
+#- Clothes from coat closet
+#
+#M 16. Joint
+#
+#- Typing stand (MJS)
+#
+#- REI brown sweater (MJS)
+#
+#- REI blue fanny pack (MJS)
+#
+#- Headband, yellow T-shirt (MJS)
+#
+#- Robe, jackets, socks (SSH)
+#
+#- Fishing hat (SSH)
+#
+#B 17. Joint
+#
+#- kitchen supplies
+#
+#- hangers
+#
+#- gift bags
+#
+#B 18. Joint
+#
+#- Portable heater / fan
+#
+#- Maps
+#
+#- Post-its
+#
+#- Microfiber cloth (from Dollar Tree)
+#
+#- 2 big knives
+#
+#- hangers
+#
+#B 19. MJS office
+#
+#- cables
+#
+#- connectors
+#
+#- digital multimeter
+#
+#- electrical doodads
+#
+#M 20. Joint
+#
+#- bathroom scale
+#
+#- eating utensils
+#
+#- towels
+#
+#M 21. Joint
+#
+#- comforter, blue king-sized
+#
+#M 22. Joint
+#
+#- sleeping bag and stuff sacks, Northface
+#
+#- sheet, full-sized
+#
+#- pillow cases
+#
+#M 23. Joint
+#
+#- sheets, king-sized
+#
+#- sweater dryer
+#
+#- sewing things (SSH)
+#
+#- holiday sweater (SSH)
+#
+#B 24. MJS
+#
+#- Cables-2-Go USB-IDE adaptor
+#
+#- ethernet switch
+#
+#- Vikeri trail camera
+#
+#- business cards collected from contacts
+#
+#- Zinwell DTV-analog converter
+#
+#- old Motorola cable modem (DOCSIS 2)
+#
+#- analog multitester (VOM)
+#
+#- bag of TV and coax doodads and laser pointer
+#
+#M 25. Joint
+#
+#- queen-sized sheets
+#
+#- umbrellas
+#
+#- canvas carry-on bags
+#
+#- kitchen gadgets
+#
+#X 26. MJS
+#
+#- heavy duty stapler and staples
+#
+#S 27. Joint
+#
+#- Panasonic corded phone
+#
+#- flashlights (2) (Harbor Freight small tubular)
+#
+#- VITA 2023 P4012, P6744
+#
+#- notepad, Cirrus Logic
+#
+#- 3-hole punch
+#
+#- Rolodex, MJS
+#
+#- post-it dispenser
+#
+#- report covers (3) (previously used for Stanford course material)
+#
+#M 28. Joint
+#
+#- binder for estate plan, from David Park (binder only, no contents)
+#
+#- tissues
+#
+#- cookbooks
+#
+#- pendaflex folder tags (tags only)
+#
+#- paper pads, miscellaneous
+#
+#- rabbit ears
+#
+#- hot pot
+#
+#- recipe box
+#
+#- phone cables and connectors
+#
+#- eyeglasses (SSH, spare)
+#
+#- calculator (SSH)
+#
+#- electric toothbrush (SSH)
+#
+#- orlando house-hunt notes
+#
+#- project notes: CalPERS, RMD, bond ladder (MJS)
+#
+#- FTA notebook 2009-2011 (MJS)
+#
+#- research log and notebook 2015-2023 (MJS)
+#
+#- greeting cards (MJS)
+#
+#- clip board
+#
+#M 29. Joint
+#
+#- kneepad
+#
+#- blankets (2) (wool, Harris Remodeling)
+#
+#- supplies from medicine cabinet
+#
+#- athletes foot cream
+#
+#- downton abbey brush
+#
+#- cane tips
+#
+#- cassette tape 7/14/78
+#
+#- Tiffany ring box (MJS)
+#
+#- BMHS class ring
+#
+#- stapler
+#
+#- staple remover
+#
+#- pool thermometer
+#
+#- pill container 7-day reminder
+#
+#- spray bottle, travel sized 3 ounce
+#
+#- comb
+#
+#- calculators (2) HP32S, HP11C
+#
+#- scissors (3)
+#
+#- fresnel magnifier (from Forum)
+#
+#- stuffed frog (Michigan)
+#
+#- shoes (1 pair, SSH)
+#
+#- necklace (SSH)
+#
+#G 30. MJS (mostly)
+#
+#- garage stuff
+#
+#- socket wrenches
+#
+#- other wrenches
+#
+#- toilet paper
+#
+#B 31. MJS (mostly)
+#
+#- haircut scissors (SSH)
+#
+#- pens
+#
+#- utility room stuff
+#
+#- drill
+#
+#- glue gun
+#
+#- solder gun
+#
+#B 32. MJS
+#
+#- propane stove
+#
+#- doodad tray box and contents
+#
+#- wrenches
+#
+#- tools
+#
+#- garage stuff
+#
+#G 33. MJS (mostly)
+#
+#- toolbox
+#
+#- tools
+#
+#- wrenches
+#
+#- Rockport dress shoes
+#
+#- paper towels
+#
+#- toilet paper
+#
+#M 34. MJS
+#
+#- tools
+#
+#- tool tray
+#
+#- wrenches
+#
+#- hiking logs
+#
+#- biking logs
+#
+#- trouble light
+#
+#M 35. Joint
+#
+#- slow cooker pot, base, cord (no cover)
+#
+#- toilet paper
+#
+#- towels
+#
+#- socks (SSH)
+#
+#L 36. Joint
+#
+#- pillows (3)
+#
+#- gateway keyboards (2)
+#
+#- placemats (4)
+#
+#- baking sheet
+#
+#- Vanguard bag
+#
+#- back scratcher
+#
+#- heavy flannel shirt (MJS)
+#
+#- skin tag removal kit (Tagband) (MJS)
+#
+#- hangers
+#
+#- wall clock (IKEA)
+#
+#- LL Bean bag
+#
+#B 37. MJS (mostly)
+#
+#- photo collection
+#
+#- shoes, Rockport suede ("Italy shoes")
+#
+#- drink thermometer
+#
+#- Audubon field guide book
+#
+#- socks (SSH)
+#
+#M 38. Joint
+#
+#- batteries (new, in pack)
+#
+#- screwdriver set (6-pack, Harbor Freight)
+#
+#- gloves (49er, MJS)
+#
+#- slow cooker lid (pot and base packed elsewhere)
+#
+#- t-shirts (MJS)
+#
+#- sweatshirt (MJS)
+#
+#- kitchen containers
+#
+#- salad tossing bowl (stainless steel)
+#
+#- colanders
+#
+#- flashlights (2, oval, Harbor Freight)
+#
+#- watch repair tools and parts
+#
+#M 40. Joint
+#
+#- box of envelopes
+#
+#- old hiking boots (MJS)
+#
+#- USB charges and cables
+#
+#- binoculars
+#
+#- Gator baseball hat (MJS)
+#
+#- Amazon Echo (Alexa)
+#
+#- blood pressure monitor
+#
+#- Logitech webcam
+#
+#- batteries for cordless phone handsets
+#
+#- kitchen tongs
+#
+#- wooden spoons
+#
+#- typing stand
+#
+#- eyeglasses (MJS)
+#
+#- hiking socks (MJS)
+#
+#- towel on dresser
+#
+#- refrigerator magnet United Healthcare (MJS)
+#
+#X 41. Joint (Antec computer box)
+#
+#- roller bag luggage (4-wheeled spinner)
+#
+#M 42. Joint
+#
+#- binder notebooks for loose leaf (2)
+#
+#- spiral notebook
+#
+#- pants (SSH)
+#
+#- socks (MJS)
+#
+#- indoor/outdoor thermometer
+#
+#- treasure light for porch
+#
+#- cordless phone handset charger bases (2)
+#
+#- eyeglasses (MJS)
+#
+#- cordless phone handsets (2)
+#
+#- clock radio
+#
+#- handwritten logs/records (MJS)
+#
+#- State Farm policy booklets
+#
+#- computer speakers (SSH)
+#
+#- extension cord for SSH computer
+#
+#- light timer
+#
+#- computer chain (1 of 2)
+#
+#- USB cables
+#
+#M 43. Joint
+#
+#- walking shorts and belt (MJS)
+#
+#- dress shirts (2 long-sleeve, 1 short-sleeve, MJS)
+#
+#- sweater (gray, MJS)
+#
+#- sweater vest (black, MJS)
+#
+#- tie (MJS)
+#
+#- socks (MJS)
+#
+#- underwear (MJS)
+#
+#- bras (SSH)
+#
+#- OBD code reader for cars
+#
+#- batteries (packaged)
+#
+#- purse (SSH)
+#
+#- Ooma Telo and cables
+#
+#- Panasonic phone base, handset, batteries
+#
+#- eyeglass repair kit
+#
+#- back brace (MJS)
+#
+#- Zenni cases and cloths
+#
+#- Roku Premiere
+#
+#M 44. MJS mostly
+#
+#- Sears air pump, hose, power switch
+#
+#- miscellaneous cloth bags
+#
+#- 100-foot power cord for yard tools (no reel)
+#
+#- Zenni case (1)
+#
+#L 45. Joint
+#
+#- down comforter
+#
+#- heating pad
+#
+#- sweater (SSH)
+#
+#- tee shirt (SSH)
+#
+#- hangers
+#
+#- plastic bags (clean, unused)
+#
+#- Zenni case (1)
+#
+#- toilet paper (6 rolls)
+#
+#- flexclaw pickup tool
+#
+#X 46. MJS
+#
+#- reel for 100-foot power cord
+#
+#- packing filler (paper, etc.)
+#
+#X Unnumbered cookie tin (Joint)
+#
+#- Roku express
+#
+#- LG TV remote
+#
+#- spare Roku remote

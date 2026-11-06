@@ -1,0 +1,256 @@
+# Set up for fiscal year 2019.  
+# To change fiscal year, grep on 2019.
+# Don't forget to change help.htm.
+
+outlayFile="outlays2019.csv";
+tempFile1="jjjjjunk1";
+tempFile2="jjjjjunk2";
+awk '
+BEGIN {
+	recordsToSkip = 1;  
+}
+{
+
+	# Skip the specified number of initial records
+	if (recordsToSkip > 0) {
+		--recordsToSkip;
+		next;
+	}
+
+	# Within a record, fields are delimited by commas.  If a field
+	# element includes commas, the element is quoted.  Here is an
+	# example with fields a through f:
+	#
+	# 	aaa,bbb,"ccc,ccc",ddd,"eee,eeeee,eeee",fff
+	#
+	# We will edit the record, replacing delimiters with semicolons
+	# and getting rid of the quotes, like this:
+	#
+	# 	aaa;bbb;ccc,ccc;ddd;eee,eeeee,eeee;fff
+
+	# Split record into pieces using quotation mark as delimiter
+	n = split($0, fred, "\"");
+
+	# Edit pieces one at a time
+	for (i=1; i<=n; i++) {
+
+		if ((i % 2) == 1) {
+
+			# In example, these pieces are:
+			#
+			# 	aaa,bbb,
+			# 	,ddd,
+			# 	,fff
+			#
+			# Commas are field delimiters, so replace with semicolon.
+			#
+			gsub(",", ";", fred[i]);
+		}
+		else {
+
+			# In example, these pieces are:
+			#
+			# 	ccc,ccc
+			# 	eee,eeeee,eeee
+			#
+			# Commas are not field delimiters, so no action.
+		}
+	}
+
+	# Print the pieces to give edited record.
+	for (i=1; i<=n; i++) {
+		printf("%s",fred[i]);
+	}
+	printf("\n");
+}
+' $outlayFile > $tempFile1
+awk '
+{
+	#
+	# Merge strings which are identical except for difference in case
+	#
+
+	# Get regular and lower-case version of input field strings
+	n = split($0, s, ";");  # regular
+	n = split(toLowerCase($0), slo, ";"); #lower case
+
+	for (i=1; i<=n; i++) {
+
+		# Set ostr to saved string, if any, that is
+		# case-insensitive match to this field string.
+		ostr = "" savedStr[slo[i]];
+
+		if (ostr == "") {
+			# No saved string found that matches.  So save
+			# this field string for future use and use it now
+			# as ostr.
+			ostr = savedStr[slo[i]] = s[i];
+		}
+
+		# Print ostr
+		if (i != 1) printf(";");
+		printf("%s", ostr);
+	}
+	printf("\n");
+} 
+function toLowerCase(s) {
+	gsub("A","a",s);
+	gsub("B","b",s);
+	gsub("C","c",s);
+	gsub("D","d",s);
+	gsub("E","e",s);
+	gsub("F","f",s);
+	gsub("G","g",s);
+	gsub("H","h",s);
+	gsub("I","i",s);
+	gsub("J","j",s);
+	gsub("K","k",s);
+	gsub("L","l",s);
+	gsub("M","m",s);
+	gsub("N","n",s);
+	gsub("O","o",s);
+	gsub("P","p",s);
+	gsub("Q","q",s);
+	gsub("R","r",s);
+	gsub("S","s",s);
+	gsub("T","t",s);
+	gsub("U","u",s);
+	gsub("V","v",s);
+	gsub("W","w",s);
+	gsub("X","x",s);
+	gsub("Y","y",s);
+	gsub("Z","z",s);
+	return s;
+}
+' < $tempFile1 > $tempFile2
+awk '
+BEGIN {
+	FS = ";";
+	yearStart = 1982;
+	yearLaunch = 2019;
+	yearFinish = yearLaunch + 4;
+	ifile = ARGV[1];
+	ARGV[1] = "";
+
+	_mainfunction[50]  = "National Defense";
+	_mainfunction[150] = "International Affairs";
+	_mainfunction[250] = "General Science and Basic Research";
+	_mainfunction[270] = "Energy";
+	_mainfunction[300] = "National Resources and Environment";
+	_mainfunction[350] = "Agriculture";
+	_mainfunction[370] = "Commerce and Housing Credit";
+	_mainfunction[400] = "Transportation";
+	_mainfunction[450] = "Community and Regional Development";
+	_mainfunction[500] = "Education, Training, Employment, and Social Services";
+	_mainfunction[550] = "Health";
+	_mainfunction[570] = "Medicare";
+	_mainfunction[600] = "Income Security";
+	_mainfunction[650] = "Social Security";
+	_mainfunction[700] = "Veterans Benefits and Services";
+	_mainfunction[750] = "Administration of Justice";
+	_mainfunction[800] = "General Government";
+	_mainfunction[900] = "Net Interest";
+	_mainfunction[920] = "Allowances";
+	_mainfunction[950] = "Undistributed Offsetting Receipts";
+
+	ofile = "fed_data.js";
+	printf("var yearStart = %s;\n", yearStart) > ofile;
+	printf("var yearFinish = %s;\n", yearFinish) > ofile;
+	printf("var yearLaunch = %s;\n", yearLaunch) > ofile;
+	close(ofile);
+
+	for (year = yearStart; year <= yearFinish; year++) {
+
+		print year;
+
+		ofile = "fed_data_" year ".htm";
+		ocount = 0;
+		fred_init();
+
+		printf("<HTML>\n") > ofile;
+		printf("<!--\nCopyright 2007-%d Michael J. Sabin\n-->\n", 2019-1) > ofile; 
+		printf("<BODY onload=\"parent.left.onloadYearData(%d)\">\n", 
+		        year) > ofile;
+		printf("<SCRIPT>\n") > ofile;
+		printf("var record = [\n") > ofile;
+
+		lastRecordNum = -2;
+		for (icount = 0; (getline < ifile) > 0; ++icount) {
+
+			agency = $2;
+			bureau = $4;
+			account = $6;
+			subfunctionCode = $8 + 0;
+			subfunction = $9;
+			beaCategory = $10;
+			grantSplit = $11;
+			onOffBudget = $12;
+			flag = 0;
+			i = year - 1982 + 34;
+			val = $i;
+			gsub(",","",val);
+			if (val == 0) continue;
+
+			# Compute mainfunction, verify it is one we recognize
+			i = int(subfunctionCode/10)*10;
+			mainfunction = _mainfunction[i];
+			if (!mainfunction) {
+				printf("Bad mainfunctionCode %d\n", i) | "cat 1>&2";
+				exit 1;
+			}
+
+			recordNum = (icount == (lastRecordNum + 1)) ? "" : icount;
+			lastRecordNum = icount;
+
+			ostr = recordNum;
+			ostr = ostr ";" fred("agency", agency);
+			ostr = ostr ";" fred("bureau", bureau);
+			ostr = ostr ";" fred("account", account);
+			ostr = ostr ";" fred("mainfunction", mainfunction);
+			ostr = ostr ";" fred("subfunction", subfunction);
+			ostr = ostr ";" fred("beaCategory", beaCategory);
+			ostr = ostr ";" fred("grantSplit", grantSplit);
+			ostr = ostr ";" fred("onOffBudget", onOffBudget);
+
+			s = val;
+			if (s == 0) s = "";
+			ostr = ostr ";" s;
+
+			ostr = "\"" ostr "\"";
+			if (ocount != 0) ostr = ",\n" ostr;
+
+			printf("%s", ostr) > ofile;
+			++ocount;
+		}
+		printf("\n];\n") > ofile;
+		printf("</SCRIPT>\n") > ofile;
+		printf("</BODY>\n") > ofile;
+		printf("</HTML>\n") > ofile;
+		close(ifile)
+		close(ofile)
+	}
+}
+function fred(str, val) {
+	if (val == f_last[str]) {
+		f_ofield = "";
+	}
+	else if ((f_n = f_alreadySeen[val]) != "") {
+		f_ofield = f_n;
+	}
+	else {
+		f_ofield = val;
+		f_alreadySeen[val] = ++f_count;
+	}
+	f_last[str] = val;
+
+	return f_ofield;
+}
+function fred_init() {
+	f_count = 0;
+	for (i in f_last) delete f_last[i];
+	for (i in f_alreadySeen) delete f_alreadySeen[i];
+}
+' $tempFile2 
+
+rm $tempFile1
+rm $tempFile2

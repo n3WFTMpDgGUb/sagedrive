@@ -1,0 +1,998 @@
+<HTML>
+<!--
+Copyright 2007-2022 Michael J. Sabin
+-->
+<HEAD>
+
+<SCRIPT SRC="./fed_data.js"></SCRIPT>
+
+<SCRIPT>
+
+
+var item = new Array();
+item.grandTotal = new Array();
+item.recordNum2index = new Array();
+
+// Make a list of field names for future use.
+//
+var fieldName = new Array();
+var i = 0;
+fieldName[i++] = {actual:"mainfunction", nice:"Function"};
+fieldName[i++] = {actual:"subfunction", nice:"Subfunction"};
+fieldName[i++] = {actual:"agency", nice:"Agency"};
+fieldName[i++] = {actual:"bureau", nice:"Bureau"};
+fieldName[i++] = {actual:"account", nice:"Account"};
+fieldName[i++] = {actual:"beaCategory", nice:"BEA Category"};
+fieldName[i++] = {actual:"grantSplit", nice:"Grant/Nongrant"};
+fieldName[i++] = {actual:"onOffBudget", nice:"On/Off Budget"};
+//
+// Make a map of "actual" fieldName element to fieldName object
+//
+for (var i=0; i<fieldName.length; i++) {
+	fieldName[fieldName[i].actual] = fieldName[i];
+}
+
+function postPad(s, n) {
+	s = s.toString();
+	for (var i=s.length; i<n; i++) s = s + " ";
+	return s;
+}
+function prePad(s, n) {
+	s = s.toString();
+	for (var i=s.length; i<n; i++) s = " " + s;
+	return s;
+}
+
+function commas(n, decPoint) {
+
+	// n, decPoint are assumed integer
+
+	// Get sign, replace n by its absolute value
+	var negSign = "";
+	if (n < 0) {
+		negSign = "-";
+		n = -n;
+	}
+
+	// Convert n to string, prepend with 0's as needed 
+	var s = n.toString();
+	for (var i = s.length; i <= decPoint; i++) {
+		s = "0" + s;
+	}
+
+	// Split into integer and fractional parts
+	var intPart, fracPart;
+	if (decPoint <= 0) {
+		intPart  = s;
+		fracPart = "";
+	}
+	else {
+		intPart  = s.slice(0,-decPoint);
+		fracPart = "." + s.slice(-decPoint);
+	}
+
+	// Insert commas in integer part
+	var i;
+	do {
+		i = intPart.length;
+		intPart = intPart.replace(/(\d+)(\d\d\d)/, "$1,$2");
+	} 
+	while(intPart.length != i); 
+
+	// Put parts together and return
+	s = negSign + intPart + fracPart;
+	return s;
+}
+
+function makeLink(url, label) {
+	return '<A HREF="' + url + '">' + label + "</A>"; 
+}
+
+function escape_apostrophe(s) {
+	// Replace each apostrophe by backslash-apostrophe.
+	return  s.replace(/'/g, "\\'"); 
+}
+
+var filter = new Array();
+
+function isFilter(fieldName) {
+	var s = fieldName.actual;
+	for (var i=0; i<filter.length; i++) {
+		if (s == filter[i].fieldName.actual) return true;
+	}
+	return false;
+}
+
+function addFilter(fnameActual, fval, skipDisplay) {
+
+	if (arguments.length < 3) skipDisplay = false;
+
+	var fname = fieldName[fnameActual];
+	if (fname == undefined) return;
+	if (isFilter(fname)) return;
+
+	var fil = new Object();
+	fil.fieldName = fname;
+	fil.fieldVal  = fval;
+	filter.push(fil);
+
+	if (!skipDisplay) calc_display();
+}
+
+function deleteFilter(fnameActual) {
+
+	var fname = fieldName[fnameActual];
+	if (fname == undefined) return;
+
+	// Nothing to do if this is not a filter -- this should never happen.
+	if (!isFilter(fname)) return;
+
+	// Find and delete from filter array.
+	for (var i=0; i<filter.length; i++) {
+		if (fnameActual == filter[i].fieldName.actual) break;
+	}
+	filter.splice(i, 1);
+
+	// Set up drillDown display so that deleted filter is one of the
+	// entries.
+	drillDown.fieldName = fname;
+
+	calc_display();
+}
+function deleteAllFilters() {
+	filter.length = 0;
+}
+
+var drillDown = new Object();
+
+function reset_display(doAlert) {
+
+	if (doAlert) {
+		var s = "Are you sure you wish to reset all values to default\n" +
+		        "and start over?";
+		if (!confirm(s)) return;
+	}
+
+	drillDown.fieldName = fieldName[0];
+	drillDown.normValue = 0;
+	drillDown.decPoint = 0;
+	drillDown.sortOrder = "amount";
+	drillDown.year = yearLaunch;
+	deleteAllFilters();
+	calc_display();
+}
+
+drillDown.changeFieldName = function(fnameActual) {
+	this.fieldName = fieldName[fnameActual];
+	calc_display();
+}
+
+drillDown.changeNorm = function(s) {
+
+	var validEntry = true;  // will make false on invalid entry
+
+	var alertStr =
+	  "Please enter a positive number\n" +
+	  "such as 50000 or 1234.56,\n" +
+	  "or leave blank for no normalization.";
+
+	// Remove any commas, leading space, trailing space
+	s = s.replace(/,/g, "");
+	s = s.replace(/^\s*/, "");
+	s = s.replace(/\s*$/, "");
+
+	if (s.match(/^$/)) {
+		// Blank
+		normValue = 0;
+		decPoint = 0;
+	}
+
+	else if (s.match(/^\d+\.?$/)) {
+		// Whole integer
+		normValue = parseInt(s, 10);
+		decPoint = 0;
+	}
+
+	else if (s.match(/^0*\.\d+$/)) {
+		// Fractional part only
+		s = s.replace(/0*\./, "");
+		normValue = parseInt(s, 10);
+		decPoint = s.length;
+	}
+
+	else if (s.match(/^\d+\.\d+$/)) {
+		// Fractional part and integer part
+		var a = s.split(".");
+		decPoint = a[1].length;
+		s = "" + a[0] + a[1];
+		normValue = parseInt(s, 10);
+	}
+
+	else {
+		// Invalid entry
+		validEntry = false;
+	}
+
+	if (validEntry) {
+		// Update state accordingly
+		drillDown.normValue = normValue;
+		drillDown.decPoint = decPoint;
+	}
+	else {
+		// Alert user, leave state unchanged
+		alert(alertStr);
+	}
+
+	// Update display.
+	calc_display();
+}
+
+drillDown.changeSortOrder = function(s) {
+	this.sortOrder = s;
+	calc_display();
+}
+
+drillDown.changeYear = function(yr) {
+	this.year = yr;
+	calc_display();
+}
+
+var singleton = new Array();
+function isSingleton(fieldName) {
+	var s = fieldName.actual;
+	for (var i=0; i<singleton.length; i++) {
+		if (s == singleton[i].fieldName.actual) return true;
+	}
+	return false;
+}
+
+var cookieID = "MJS_fedbudget";
+var currentCookie = "";
+
+function exportCookie() {
+
+	var str = "";
+
+	// Concat state variables into str, delimit with ";"
+	str +=       drillDown.fieldName.actual;
+	str += ";" + drillDown.normValue;
+	str += ";" + drillDown.decPoint;
+	str += ";" + drillDown.sortOrder;
+	str += ";" + drillDown.year;
+
+	// Append filter info to str, delimit with ";"
+	for (var i=0; i<filter.length; i++) {
+		str += ";" + filter[i].fieldName.actual + 
+		       ";" + filter[i].fieldVal;
+	}
+
+	// Format str for export as cookie
+	str = escape(str);
+	str = cookieID + "=" + str;
+
+	// Export cookie and save a copy
+	document.cookie = str;
+	currentCookie = str;
+	//alert("Export cookie:\n" + str);
+
+}
+
+function importCookie() {
+
+	// Import cookie
+	var str = document.cookie;
+	//alert("Import cookie:\n" + str); 
+
+	// Get substring that begins with cookie ID
+	var p = str.indexOf(cookieID + "=");
+	if (p < 0) {
+		// No cookie found
+		return false;   
+	}
+	p += cookieID.length + 1;
+	str = str.substr(p);
+
+	// Delete any appended name/value pairs delimited by semicolon
+	p = str.indexOf(";");
+	if (p > 0) {
+		str = str.substr(0, p);
+	}
+
+	// Save copy of imported cookie, then unescape
+	currentCookie = str;
+	str = unescape(str);
+
+	// Split string along delimiter ";"
+	var a = str.split(";");
+
+	// Initialize state variables
+	var i=0;
+	drillDown.fieldName  = fieldName[a[i++]];
+	drillDown.normValue = a[i++]; 
+	drillDown.decPoint   = a[i++];
+	drillDown.sortOrder  = a[i++];
+	drillDown.year       = a[i++];
+
+	// Initialize filters
+	var skipDisplay = true;
+	for (; i<a.length; i += 2) {
+		addFilter(a[i], a[i+1], skipDisplay);
+	}
+
+	return true;
+
+}
+
+function onPageShowHandler(rightCookie) {
+
+	/*
+	Get here from onPageShow event.  This event is specific to
+	Firefox browser and occurs whenever right frame is redrawn,
+	including when redrawn by user hitting back button.
+
+	The reason for this handler is that the "document.replace()"
+	logic doesn't work on Firefox as it does in Internet Explorer.
+	This gives the Firefox user the ability to hit the back button
+	and mess up sync between right and left frames.  This handler
+	checks for out-of-sync and restores sync if needed.
+	*/
+
+	// Check that right and left frames are in sync by comparing what
+	// each thinks the cookie is.
+	//
+	var leftCookie = currentCookie;
+	if (rightCookie != leftCookie) {
+
+		// Out of sync.  Alert user not to hit back button.
+		//
+		alert(
+		  "Please do not use your Internet browser's navigation controls.\n" +
+		  "Use only the controls in the Federal Budget Browser.");
+
+		// Restore sync by brute force.  Reload this frame (left),
+		// which rewrites right frame to match leftCookie.
+		//
+		location.reload(true);
+	}
+}
+
+function helpButtonHandler(element) {
+	// Get here when help button is clicked.
+	window.open("help.htm", "federal_budget_browser_help");
+}
+function drillDownSelectHandler(element) {
+	// Get here when drillDownSelect form changes value
+	var s = element.value;
+	drillDown.changeFieldName(s);
+}
+function yearSelectHandler(element) {
+	// Get here when yearSelect form changes value
+	var yr = element.value;
+	drillDown.changeYear(yr);
+}
+function normEntryHandler(element) {
+	// Get here when normEntry form changes value
+	var n = element.value;
+	drillDown.changeNorm(n);
+}
+function restartButtonHandler(element) {
+	// Get here when restart button is clicked.
+	var doAlert = true;
+	reset_display(doAlert);
+};
+function submitHandler() {
+
+	// Get here when control form is submitted.
+
+	// Submit may happen when user hits "enter" while focus is
+	// on a text field.  We don't want submit to happen, we
+	// just want text field to be processed if it has changed.
+	// Easy solution:  move focus to restart button when submit
+	// happens.  This will trigger field's onchange() handler,
+	// if it has changed.
+	//
+	var destDoc = parent.right.document;
+	destDoc.controlForm.restartButton.focus();
+
+	// Return false, to prevent submit from occurring.
+	return false; 
+}
+
+function calc_display() {
+	var destDoc = parent.right.document;
+	function dw(msg) {destDoc.write(msg);}
+
+	if (!onloadYearData.isLoaded[drillDown.year]) {
+
+		// Load data file for this year.  Handler onloadYearData
+		// will call this routine when loading/parsing is complete.
+		//
+		var url = "./fed_data_" + drillDown.year + ".htm"; 
+
+		destDoc.location.replace(url);
+
+		return;
+	}
+
+	// Set up arrays for logging hits of fields in filtered
+	// records.
+	//
+	for (var i=0; i<fieldName.length; i++) {
+		fieldName[i].hitList = new Object();
+	}
+
+	// Set up object for logging amounts of filtered records.
+	var amount = new Object();
+
+	// Do filter/index operation
+	//
+	var filteredRecordCount = 0;
+	for (var i=0; i<item.length; i++) {
+
+		// Skip records that have zero or undefined amount for this year
+		if (item[i].amount[drillDown.year] == undefined) continue; 
+		if (item[i].amount[drillDown.year] == 0) continue;
+
+		//
+		// Apply filters
+		//
+
+		var flag = 0;
+		var fname, fval;
+
+		for (var j=0; j<filter.length; j++) {
+			fname = filter[j].fieldName.actual;
+			fval  = filter[j].fieldVal;
+			if (item[i][fname] != fval) {
+				flag = 1;
+				break;
+			}
+		}
+
+		// Do nothing if this is not a filtered record.
+		if (flag == 1) continue;
+
+		// Found a filtered record.  Update amount and hitlist.
+		//
+		++filteredRecordCount;
+		fname = drillDown.fieldName.actual;
+		fval = item[i][fname];
+		if (amount[fval] == undefined) amount[fval] = 0;
+		amount[fval] += item[i].amount[drillDown.year];
+		//
+		for (var j=0; j<fieldName.length; j++) {
+			fname = fieldName[j].actual;
+			fval  = item[i][fname]; 
+			fieldName[j].hitList[fval] = true; // record the hit
+		}
+	}
+
+	// Count the hits in hitList, tag fieldName elements with count
+	for (var i=0; i<fieldName.length; i++) {
+		var count = 0;
+		for (var j in fieldName[i].hitList) ++count;
+		fieldName[i].hitCount = count;
+	}
+
+	// Build up drillDown entries, each with a fieldVal and amount.
+	var entry = new Array();
+	for (var fval in amount) {
+		var i = entry.length;
+		entry[i] = new Object();
+		entry[i].fieldVal = fval;
+		entry[i].amount = amount[fval];
+	}
+	drillDown.entry = entry;
+	drillDown.entryName = drillDown.fieldName.nice;
+
+	// Normalize drillDown amounts, compute total
+	var total = 0;
+	var normFactor = drillDown.normValue / item.grandTotal[drillDown.year];
+	if (normFactor == 0) {
+		normFactor = 0.001;
+		for (var i=0; i<drillDown.decPoint; i++) normFactor *= 10;
+	}
+	for (var i=0; i<drillDown.entry.length; i++) {
+		var x = normFactor * drillDown.entry[i].amount;
+		total += x;
+		drillDown.entry[i].amount = Math.round(x);
+	}
+	drillDown.total = Math.round(total);
+
+	// Sort drillDown entries
+	//
+	switch(drillDown.sortOrder) {
+		case "amount":
+			drillDown.entry.sort(function(e1, e2) {
+				return (e2.amount - e1.amount);
+			});
+			break;
+
+		case "fieldVal":
+			drillDown.entry.sort(function(e1, e2) {
+				if (e1.fieldVal < e2.fieldVal) return -1;
+				if (e1.fieldVal > e2.fieldVal) return 1;
+				return 0;
+			});
+			break;
+	}
+
+	//
+	// Insert commas, prepend dollar sign to drillDown entries, total.
+	//
+	// First find the longest entry (or total) after commas are inserted.
+	//
+	var s = drillDown.total = commas(drillDown.total, drillDown.decPoint);
+	lmax = s.length;
+	for (var i=0; i<drillDown.entry.length; i++) {
+		var s = drillDown.entry[i].amount = 
+		  commas(drillDown.entry[i].amount, drillDown.decPoint);
+		if (s.length > lmax) lmax = s.length;
+	}
+	// Now prepad each entry (and total) to same size, then prepend dollar
+	// sign.  
+	//
+	for (var i=0; i<drillDown.entry.length; i++) {
+		var s = drillDown.entry[i].amount;
+		s = "$ " + prePad(s, lmax);
+		// Use non-breaking spaces
+		drillDown.entry[i].amount = s.replace(/ /g,"&nbsp;");
+	}
+	var s = drillDown.total;
+	s = "$ " + prePad(s, lmax);
+	drillDown.total = s.replace(/ /g,"&nbsp;"); 
+
+	// Get singleton array.  A singleton means a non-filter field with
+	// a single hit after filtering.
+	//
+	singleton = new Array();
+	for (var i=0; i<fieldName.length; i++) {
+		if (!isFilter(fieldName[i]) && (fieldName[i].hitCount == 1)) {
+
+			// Found a singleton.  Build an entry to it.
+
+			var obj = new Object;
+			obj.fieldName = fieldName[i];
+
+			// Hitlist object has a single entry, use
+			// "for-in" logic to get the index of that entry.
+			//
+			for (var s in fieldName[i].hitList) obj.fieldVal = s;
+
+			singleton[singleton.length] = obj;
+		}
+	}
+
+	var s = fieldName[drillDown.fieldName.actual];
+	if (isFilter(s) || isSingleton(s)) {
+
+		// DrillDown.fieldName is a filter or a singleton.  Using
+		// it as the display index is not informative, since it
+		// produces only a single entry.  Let's see if we can find
+		// a field that will result in more than one entry.
+		//
+		for (var i=0; i<fieldName.length; i++) {
+
+			if (isFilter(fieldName[i])) continue;
+			if (isSingleton(fieldName[i])) continue;
+
+			// Found a field that will produce more than one
+			// entry.  Let's change to that.
+			//
+			drillDown.changeFieldName(fieldName[i].actual);
+
+			// The call to changeFieldName() included
+			// a new call to this routine, so nothing
+			// further to do here.
+			return;
+		}
+
+		// Did not find a better choice of field to use as display
+		// index -- any field will produce only a single entry.  So
+		// don't display any entries -- display only the total.
+		//
+		drillDown.entry.length = 0;
+	}
+
+
+	// If not displaying entries, use null for entryName
+	if (drillDown.entry.length == 0) drillDown.entryName = ""; 
+
+	// Build control form.  Build it as an HTML string which will be
+	// placed where desired in output stream.
+	//
+	var ostr = "";
+	ostr += "\n<form name=controlForm" +
+	        " onSubmit='return parent.left.submitHandler()'" +
+			">";
+	//
+	// DrillDown display control
+	//
+	ostr += "Display&nbsp;by:&nbsp;" +
+	        "<select" +
+			" name=drillDownSelect" +
+		    " onChange='parent.left.drillDownSelectHandler(this)'" +
+			">\n"; 
+	//
+	if (filteredRecordCount > 0) {
+		for (var i=0; i < fieldName.length; i++) {
+
+			// Don't include filtered fields or singletons as index options
+			//
+			if (isFilter(fieldName[i])) continue;
+			if (isSingleton(fieldName[i])) continue;
+
+			var v = "value=" + fieldName[i].actual
+			var s = fieldName[i].nice + " (" + fieldName[i].hitCount +")";
+			var sel = (fieldName[i].actual == drillDown.fieldName.actual) ? 
+		           	" selected" : "";
+			ostr += "<option " + v + sel + ">" + s;
+			sel = "";
+		}
+	}
+	//
+	ostr += "</select>&nbsp; "; 
+
+	//
+	// Normalization control
+	//
+	var v = drillDown.normValue;
+	var decPoint = drillDown.decPoint;
+	if ((v != 0) || (decPoint != 0)) 
+	    v = 'value="' + commas(v, decPoint) + '"';
+	else 
+		v = "";
+	//
+	ostr += "Normalization:&nbsp;";
+	ostr += "<input type=text name=normEntry " + 
+	        v + 
+			" size=10" +
+			" autocomplete='off'" +
+		    " onChange='parent.left.normEntryHandler(this)'" +
+			">\n"; 
+	        "</input>&nbsp; "; 
+	//
+	// Restart control
+	//
+	ostr += "Start&nbsp;over?&nbsp;" +
+	        "<input type=button name=restartButton" +
+			" value=OK" +
+			" onClick='parent.left.restartButtonHandler(this)'" +
+			"></input>&nbsp; ";
+
+	//
+	// Year control
+	//
+	ostr += "Change&nbsp;year:&nbsp;" +
+	        "<select name=yearSelect" +
+		    " onChange='parent.left.yearSelectHandler(this)'" +
+			">\n";
+	for (var yr=yearStart; yr <= yearFinish; yr++) {
+		var v = "value=" + yr;
+		var s = "" + yr;
+		var sel = (yr == drillDown.year) ? " selected" : "";
+		ostr += "<option " + v + sel + ">" + s;
+	}
+	ostr += "</select>&nbsp; ";
+
+	//
+	// All done with controls.
+	//
+	ostr += "\n</form>";
+	var formStr = ostr;
+
+	// Build help button
+	var ostr = "\n";
+	ostr += "<form name=helpForm>";
+	ostr += "<input type=button name=helpButton value=Help";
+	ostr += " onClick='parent.left.helpButtonHandler(this)'";
+	ostr += "'></input>";
+	ostr += "</form>\n";
+	var helpFormStr = ostr;
+
+
+	// Save current state as a cookie.  If user goes to another site
+	// then returns here, will resume at this state.
+	exportCookie();
+
+	//
+	// Output stuff
+	//
+
+	// Use "location.replace()" to prevent a new entry in the history
+	// list.  Otherwise, use of the browser's "back" and "forward"
+	// buttons can cause display to get out of sync with program state.
+	//
+	destDoc.location.replace("about:blank"); 
+
+	// Safari seems to need close then open
+	destDoc.close();
+	destDoc.open();
+
+	var ops = 'onPageShow="parent.left.onPageShowHandler(' + 
+	          "'" + currentCookie + "'" + 
+			  ')"';
+	dw('<html><body link="blue" vlink="blue" ' + ops + '><tt>');
+	dw('<h1>Federal Budget Browser for Fiscal Year ' + drillDown.year + 
+	   '</h1>');
+
+	dw("<table><tbody>");
+
+	// Filter info
+	//
+	if (filter.length > 0) {
+		dw("<tr>" + 
+		   "<td colspan=5><tt>Narrow results to:</td>" +
+		   "</tr>");
+		for (var i=0; i<filter.length; i++) {
+			var fn = filter[i].fieldName.nice;
+			var fa = filter[i].fieldName.actual;
+			var fv = filter[i].fieldVal;
+			var url = "javascript:parent.left.deleteFilter('" + fa + "')";
+			dw("<tr>" +
+			   "<td><tt>&nbsp;</td>" + 
+			   "<td colspan=2 valign=top><tt>" + fn + ":</td>" +
+			   "<td><tt>&nbsp;</td>" + 
+			   "<td><tt>" + makeLink(url, fv) + "</td>" +
+			   "</tr>");
+		}
+		dw("<tr><td><tt>&nbsp;</td></tr>");
+	}
+
+	// Singleton info
+	//
+	if (singleton.length > 0) {
+		dw("<tr>" + 
+		   "<td colspan=5><tt>This implicitly narrows results to:</td>" +
+		   "</tr>");
+		for (var i=0; i<singleton.length; i++) {
+			var sn = singleton[i].fieldName.actual;
+			var sv = singleton[i].fieldVal;
+			var esv = escape_apostrophe(sv);
+			var url = 
+			  "javascript:parent.left.addFilter('" + sn + "','" + esv + "')";
+			sn = singleton[i].fieldName.nice;
+			dw("<tr>" +
+			   "<td><tt>&nbsp;</td>" + 
+			   "<td colspan=2 valign=top><tt>" + sn + ":</td>" +
+			   "<td><tt>&nbsp;</td>" + 
+			   "<td><tt><u>" + makeLink(url, sv) + "</td>" +
+			   "</tr>");
+		}
+		dw("<tr><td><tt>&nbsp;</td></tr>");
+	}
+
+	// "No results found", if appropriate
+	if (filteredRecordCount == 0) {
+		dw("<tr>" +
+		   "<td colspan=5><tt>No results found.</td>" +
+		   "</tr>");
+		dw("<tr><td><tt>&nbsp;</td></tr>");
+	}
+
+	// Controls
+	//
+	dw("<tr>" +
+	   "<td colspan=5><tt>" + formStr + "</td>" +
+	   "</tr>");
+
+	// Drilldown info
+	//
+	var a = "Amount";
+	if (drillDown.normValue == 0) a = a + "<br>(millions)";
+	if (drillDown.sortOrder != "amount") {
+		// Column heading for amount is link to sort-by-amount
+		var url = 
+		  "javascript:parent.left.drillDown.changeSortOrder('amount')";
+		a = makeLink(url, a);
+	}
+	var fv = drillDown.entryName;
+	if (drillDown.sortOrder != "fieldVal") {
+		// Column heading for field value is link to sort-by-fieldVal
+		var url = 
+		  "javascript:parent.left.drillDown.changeSortOrder('fieldVal')";
+		fv = makeLink(url, fv);
+	}
+	//
+	dw("<tr>" +
+	   "<td align=right valign=top colspan=3><tt><b>" + a + "</td>" +
+	   "<td><tt>&nbsp;</td>" + 
+	   "<td valign=bottom><tt><b>" + fv + "</td>");
+	//
+	var fn = drillDown.fieldName.actual;
+	for (var i=0; i<drillDown.entry.length; i++) {
+		var a  = drillDown.entry[i].amount;
+		var fv = drillDown.entry[i].fieldVal;
+		var efv = escape_apostrophe(fv);
+		var url = 
+		  "javascript:parent.left.addFilter('" + fn + "','" + efv + "')";
+		dw("<tr>" +
+		   "<td><tt>&nbsp;</td>" +
+		   "<td align=right valign=top><tt>" + "</td>" +
+		   "<td align=right valign=top><tt>" + a + "</td>" +
+		   "<td><tt>&nbsp;</td>" +
+		   "<td><tt>" + makeLink(url, fv) + "</td>" +
+		   "</tr>");
+	}
+	//
+	var total = drillDown.total;
+	dw("<tr>" +
+	   "<td><tt>&nbsp;</td>" +
+		   "<td align=right valign=top><tt>" + "</td>" +
+	   "<td align=right valign=top><tt>" + total + "</td>" +
+	   "<td><tt>&nbsp;</td>" +
+	   "<td><tt>" + "<b>Total</b>" + "</td>" +
+	   "<tr>");
+
+	dw("</tbody></table>");
+
+	// Help button
+	dw(helpFormStr); 
+
+	// OMB citation
+	dw('<h4>Source:  White House Office of Management and Budget, ' + dateOMB + '</h4>'); 
+
+	dw("</tt></body></html>");
+	destDoc.close();
+
+}
+
+function onloadYearData(year) {
+
+	//
+	// Process a year's worth of data records just loaded into the
+	// right frame.  The file in the right frame calls this
+	// routine when loading is complete.
+	//
+
+	//alert("onloadYearData(" + year + ")");
+
+	var fname = [
+		// Name of fields in the order they appear in record
+		"agency", "bureau", "account", "mainfunction",
+		"subfunction", "beaCategory", "grantSplit",
+		"onOffBudget"
+	];
+
+	var record = parent.right.record;
+	var prev_fval = new Array();
+	var past_fval = new Array();
+	past_fval[0] = "";  // dummy element 0, real elements start with 1
+
+	// Parse record array into item array
+	//
+	for (var i=0; i<record.length; i++) {
+
+		var s;
+		var j=0;
+
+		// Split record along field delimiter
+		var fval = record[i].split(";");
+
+		// Get record number.  
+		// This refers to record in the original outlays.csv file.
+		//
+		var recordNum = fval[j++];
+		if (recordNum == "") {
+			recordNum = lastRecordNum + 1;
+		}
+		lastRecordNum = recordNum - 0;
+
+		// Get index of item that corresponds to record
+		var itemIndex = item.recordNum2index[recordNum];
+		var newItem = false;
+		//
+		if (itemIndex == undefined) {
+
+			// No item corresponds to this record.
+			// Create an item and bind it to this record.
+			newItem = true;
+			itemIndex = item.length;
+			item[itemIndex] = new Object();
+			item[itemIndex].amount = new Array();
+			item.recordNum2index[recordNum] = itemIndex;
+		}
+
+		for (var k=0; k<fname.length; k++) {
+
+			var fv = fval[j++];
+
+			if (fv == "") {
+				// Null field means use previous value for this field
+				s = prev_fval[k];
+			}
+
+			else if (parseInt(fv,10) == fv){
+				// Numeric field identifies a field value seen in the past.
+				s = past_fval[fv];
+			}
+
+			else {
+				// A not-seen-before field value.
+				s = fv;
+				past_fval.push(s);
+			}
+
+			// Save current field value as previous, for next record
+			prev_fval[k] = s;
+
+			if (newItem) {
+				// Create element of item with this field name and value
+				item[itemIndex][fname[k]] = s;
+			}
+
+		}
+
+		// Remaining field is dollar amount for this year
+		item[itemIndex].amount[year] = fval[j++] - 0;
+
+
+		//alert(" recordNum=" + recordNum +
+		//      " newItem=" + newItem +
+		//      " itemIndex=" + itemIndex +
+		//      " amount=" + item[itemIndex].amount[year]);
+
+	}
+
+	// Compute grand total of item amounts for this year
+	var sum = 0;
+	for (var i=0; i<item.length; i++) {
+		var x = item[i].amount[year];
+		if (x == undefined) x = 0;
+		sum += x - 0;
+	}
+	item.grandTotal[year] = sum;
+
+	// Mark this year's data as loaded.
+	onloadYearData.isLoaded[year] = true;
+
+	calc_display();
+}
+onloadYearData.isLoaded = new Array();
+
+
+</SCRIPT>
+</HEAD>
+
+<BODY>
+
+<SCRIPT>
+if (top.location.href == self.location.href) {
+
+	// This page was loaded directly and not as part of its frameset.
+	// Fix by loading frameset.  Use location.replace() to avoid
+	// erroneous entry in browser history list.
+	top.location.replace("./fedbudget.htm");
+}
+else {
+	if (!importCookie()) {
+		// No cookie found.  Use reset_display() to start a new session.
+		//
+		// alert("No cookie");
+		reset_display(false);
+	}
+	else {
+		// Cookie found, so state has been restored to previous session.
+		// Use calc_display() to continue previous session.
+		//
+		// alert("Found cookie");
+		calc_display();
+	}
+}
+</SCRIPT>
+
+<img src="/~fedbud/site/exec/counter.cgi?fedbud">
+
+<!-- Start of StatCounter Code -->
+<script type="text/javascript">
+var sc_project=3347837; 
+var sc_invisible=0; 
+var sc_partition=36; 
+var sc_security="8ce14a05"; 
+</script>
+
+<script type="text/javascript" src="http://www.statcounter.com/counter/counter_xhtml.js"></script><noscript><div class="statcounter"><a class="statcounter" href="http://www.statcounter.com/"><img class="statcounter" src="http://c37.statcounter.com/3347837/0/8ce14a05/0/" alt="website stats" /></a></div></noscript>
+<!-- End of StatCounter Code -->
+
+</BODY>
+</HTML>
