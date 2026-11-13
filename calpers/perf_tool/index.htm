@@ -1,12 +1,11 @@
 <html>
 <head>
-<script src="/googanal.js"></script>
 
 <script src="https://www.gstatic.com/charts/loader.js"></script>
 
 <script type="text/javascript">
 
-var expected_irr = 0.0782;
+var expected_irr = 0.0769;
 var expected_mva = 0;
 var expected_status = 0;
 
@@ -60,25 +59,31 @@ function drawChart() {
 	fred.push( {liab1:97925,  mva1:120629,      irr: 20.1} );
 	fred.push( {liab1:106938, mva1:143144,      irr: 19.5} );
 	fred.push( {liab1:115748, mva1:159567,      irr: 12.5} );
-	fred.push( {liab1:135970, mva1:172163,      irr: 10.5} );
-	fred.push( {liab1:149155, mva1:156035,      irr: -7.2} );
+	fred.push( {liab1:135970, mva1:172163,      irr: 10.5} ); // 2000
+	fred.push( {liab1:149155, mva1:156035,      irr: -7.1} );
 	fred.push( {liab1:163961, mva1:142455,      irr: -6.1} );
 	fred.push( {liab1:180922, mva1:144330,      irr:  3.7} );
 	fred.push( {liab1:194609, mva1:167110,      irr: 16.6} );
-	fred.push( {liab1:210301, mva1:189103,      irr: 12.3} );
-	fred.push( {liab1:228131, mva1:211188,      irr: 11.8} );
-	fred.push( {liab1:248224, mva1:251162,      irr: 19.1} );
-	fred.push( {liab1:268324, mva1:238041,      irr: -5.1} );
-	fred.push( {liab1:294042, mva1:178860,      irr:-24.0} );
-	fred.push( {liab1:308343, mva1:201632,      irr: 13.3} );
-	fred.push( {liab1:328567, mva1:241740,      irr: 21.7} );
-	fred.push( {liab1:340429, mva1:236800,      irr:  0.1} );
-	fred.push( {liab1:375019, mva1:261622,      irr: 13.2} );
-	fred.push( {liab1:394726, mva1:301257,      irr: 17.7} );
-	fred.push( {liab1:413700, mva1:302418,      irr:  2.4} );
+	fred.push( {liab1:210301, mva1:189103,      irr: 12.2} ); // 2005
+	fred.push( {liab1:228131, mva1:211188,      irr: 11.9} );
+	fred.push( {liab1:248224, mva1:251162,      irr: 18.8} );
+	fred.push( {liab1:268324, mva1:238041,      irr: -2.9} );
+	fred.push( {liab1:294042, mva1:178860,      irr:-23.6} );
+	fred.push( {liab1:308343, mva1:201632,      irr: 11.1} ); // 2010
+	fred.push( {liab1:328567, mva1:241740,      irr: 20.7} );
+	fred.push( {liab1:340429, mva1:236800,      irr:  1.0} );
+	fred.push( {liab1:375019, mva1:261622,      irr: 12.5} );
+	fred.push( {liab1:394726, mva1:301257,      irr: 18.4} );
+	fred.push( {liab1:413700, mva1:302418,      irr:  2.4} ); // 2015
 	fred.push( {liab1:436703, mva1:298126,      irr:  0.6} );
 	fred.push( {liab1:465046, mva1:326182,      irr: 11.2} );
 	fred.push( {liab1:504996, mva1:354616,      irr:  8.6} );
+	fred.push( {liab1:531166, mva1:372778,      irr:  6.7} ); // 2019
+	fred.push( {liab1:554679, mva1:391381,      irr:  4.7} ); // 2020
+	fred.push( {liab1:587976, mva1:477338,      irr: 21.3} ); // 2021
+	fred.push( {liab1:619329, mva1:439388,      irr: -6.1} ); // 2022
+	fred.push( {liab1:650821, mva1:464491,      irr:  5.8} ); // 2023
+	fred.push( {liab1:685021, mva1:506413,      irr:  9.3} ); // 2024
 	//
 	// Include year for all but first. 
 	for (var i=1; i<fred.length; i++) {
@@ -177,7 +182,7 @@ function tweakTable(irr, eva, eStatus) {
 
 	var cLabel = 0;
 	//var c1993 = 2;
-	var c2018 = 4;
+	var cYearN = 4;
 	var rLiab = 1;
 	var rExpectedMva = 3;
 	var rExpectedStatus = 5;
@@ -189,14 +194,14 @@ function tweakTable(irr, eva, eStatus) {
 	tbl.rows[rExpectedMva].cells[cLabel].innerHTML = 
 		"C. Value of assets based on " + irrStr + "% return";
 
-	tbl.rows[rExpectedMva].cells[c2018].innerHTML = 
+	tbl.rows[rExpectedMva].cells[cYearN].innerHTML = 
 		"$" + evaStr + "B";
 
 	tbl.rows[rExpectedStatus].cells[cLabel].innerHTML = 
 		"E. Funded status based on " + irrStr
 		+ "% return (C &divide; A)";
 
-	tbl.rows[rExpectedStatus].cells[c2018].innerHTML = 
+	tbl.rows[rExpectedStatus].cells[cYearN].innerHTML = 
 		eStatusStr + "%";
 
 }
@@ -325,7 +330,7 @@ function ssWinHandler() {
 		lo.push([]);
 		hi[i].push(rows[i][0]);
 		lo[i].push(rows[i][0]);
-		for (var j=1; j<=13; j++) {
+		for (var j=1; j<=16; j++) {
 			hi[i].push(rows[i][j]);
 		}
 		for (; j < rows[i].length; j++) {
@@ -368,21 +373,21 @@ function ssWinHandler() {
 		<td>&nbsp;</td>
 		<th align=right>1993</th>
 		<td>&nbsp;</td>
-		<th align=right>2018</th>
+		<th align=right>2024</th>
 	</tr>
 	<tr>
 		<td>A. Accrued liability</td>
 		<td>&nbsp;</td>
 		<td align=right>$75.9B</td>
 		<td>&nbsp;</td>
-		<td align=right>$505.0B</td>
+		<td align=right>$685.0B</td>
 	</tr>
 	<tr>
 		<td>B. Actual value of assets</td>
 		<td>&nbsp;</td>
 		<td align=right>$75.9B</td>
 		<td>&nbsp;</td>
-		<td align=right>$354.6B</td>
+		<td align=right>$506.4B</td>
 	</tr>
 	<tr>
 		<td>C. Value of assets based on ?.??% return</td>
@@ -396,7 +401,7 @@ function ssWinHandler() {
 		<td>&nbsp;</td>
 		<td align=right>100%</td>
 		<td>&nbsp;</td>
-		<td align=right>70.2%</td>
+		<td align=right>73.9%</td>
 	</tr>
 	<tr>
 		<td>E. Funded status based on ?.??% return (C &divide; A)
@@ -426,9 +431,9 @@ Choose fixed return (%):
 <p>
 <p>
 This tool displays the actual funded status of the CalPERS PERF fund
-during the 25-year period of 1993 to 2018.  It compares the actual
+during the 31-year period of 1993 to 2024.  It compares the actual
 funded status to what it would have been had investments yielded a fixed
-return in each of those 25 years.
+return in each of those 31 years.
 
 <!--
 <p>
@@ -440,8 +445,8 @@ earned from past employment.
 -->
 
 <p>
-In 1993 the funded status was 100%, but by 2018 it had dropped to 70.2%,
-a shortfall of $150.4B. The shortfall is often blamed on investment
+In 1993 the funded status was 100%, but by 2024 it had dropped to 73.9%,
+a shortfall of $178.6B. The shortfall is often blamed on investment
 return being less than hoped for.  This tool allows you to explore if
 this is actually true or not.
 
@@ -452,18 +457,18 @@ Here are some example returns you might want to try:
 
 <ul>
 
-<li> <b>7.82%</b> produces a final result equal to the actual funded
-status (70.2% in 2018).  This shows that the actual investment results
-were equivalent to a fixed return of 7.82%.  </li>
+<li> <b>7.69%</b> produces a final result equal to the actual funded
+status (73.9% in 2024).  This shows that the actual investment results
+were equivalent to a fixed return of 7.69%.  </li>
 
-<li> <b>9.13%</b> produces a final result of full funding (100.1% in
-2018).  This shows that investments would have had to earn a fixed
-return of 9.13% to overcome the shortfall that occurred over the 25
+<li> <b>8.58%</b> produces a final result of full funding (100.1% in
+2024).  This shows that investments would have had to earn a fixed
+return of 8.58% to overcome the shortfall that occurred over the 31
 years.  </li>
 
-<li> <b>7.0%</b> produces a final result worse than the actual funded
-status (55.7% versus 70.2% in 2018).  Thus investments did better over
-the 25 years than the current assumption of 7.0%.  </li>
+<li> <b>6.8%</b> produces a final result worse than the actual funded
+status (53.9% versus 73.9% in 2024).  Thus investments did better over
+the 31 years than the current assumption of 6.8%.  </li>
 
 </ul>
 </div>
